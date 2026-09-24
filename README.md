@@ -64,3 +64,7 @@ The settings menu can also be opened from a keybind: `omarchy-shell simon.better
 ## Troubleshooting
 
 If a change to the plugin files doesn't appear in the bar, run `omarchy restart shell`.
+
+## License
+
+MIT. See [LICENSE](LICENSE). Based on the Omarchy Workspaces widget by David Heinemeier Hansson.
