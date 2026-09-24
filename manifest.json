@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "id": "simon.betterbar",
-  "name": "BetterBar",
+  "id": "simon.betterworkspaces",
+  "name": "BetterWorkspaces",
   "version": "1.0.0",
   "author": "Simon From",
   "description": "Workspace indicators with app icons and a settings menu",
@@ -9,10 +9,10 @@
     "bar-widget"
   ],
   "entryPoints": {
-    "barWidget": "BetterBar.qml"
+    "barWidget": "BetterWorkspaces.qml"
   },
   "barWidget": {
-    "displayName": "BetterBar",
+    "displayName": "BetterWorkspaces",
     "description": "Workspace indicators with app icons and a settings menu",
     "category": "Compositor",
     "allowMultiple": false

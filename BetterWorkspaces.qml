@@ -5,7 +5,7 @@ import Quickshell.Hyprland
 import qs.Commons
 import qs.Ui
 
-// BetterBar: workspace indicators with icons for the apps open on each
+// BetterWorkspaces: workspace indicators with icons for the apps open on each
 // workspace. Based on the built-in omarchy.workspaces widget.
 //
 // Left-click a workspace to focus it, right-click to open the settings menu.
@@ -23,11 +23,11 @@ import qs.Ui
 Panel {
   id: root
   moduleName: "omarchy.workspaces"
-  // `omarchy-shell simon.betterbar toggle` opens the settings menu.
-  ipcTarget: "simon.betterbar"
+  // `omarchy-shell simon.betterworkspaces toggle` opens the settings menu.
+  ipcTarget: "simon.betterworkspaces"
 
   // Layout entry id in shell.json; settings are persisted against it.
-  readonly property string entryId: "simon.betterbar"
+  readonly property string entryId: "simon.betterworkspaces"
 
   readonly property bool vertical: bar ? bar.vertical : false
   readonly property int barSize: bar ? bar.barSize : Style.bar.sizeHorizontal
@@ -370,7 +370,7 @@ Panel {
           spacing: Style.space(2)
 
           Text {
-            text: "BetterBar"
+            text: "BetterWorkspaces"
             color: root.barForeground
             font.family: root.bar ? root.bar.fontFamily : Style.font.family
             font.pixelSize: Style.font.title

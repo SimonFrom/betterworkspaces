@@ -1,8 +1,8 @@
-# BetterBar
+# BetterWorkspaces
 
 A workspace widget for the Omarchy bar that shows the apps open on each workspace, based on the built-in Workspaces widget.
 
-![BetterBar in the bar](screenshots/bar.png)
+![BetterWorkspaces in the bar](screenshots/bar.png)
 
 ## What it does
 
@@ -40,7 +40,7 @@ Changes apply right away and are saved to `~/.config/omarchy/shell.json`.
 These options are only available by editing the widget's entry in `shell.json`:
 
 ```json
-{ "id": "simon.betterbar", "maxIcons": 4, "dedupe": true, "showIcons": true, "activeColor": "#ffffff" }
+{ "id": "simon.betterworkspaces", "maxIcons": 4, "dedupe": true, "showIcons": true, "activeColor": "#ffffff" }
 ```
 
 - `maxIcons`: the number of icons shown per workspace before it shows "+N".
@@ -48,7 +48,7 @@ These options are only available by editing the widget's entry in `shell.json`:
 - `showIcons`: turns app icons off entirely.
 - `activeColor`: overrides the theme colour of the active border.
 
-The settings menu can also be opened from a keybind: `omarchy-shell simon.betterbar toggle`.
+The settings menu can also be opened from a keybind: `omarchy-shell simon.betterworkspaces toggle`.
 
 ## What it can't do
 
