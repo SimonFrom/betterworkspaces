@@ -9,7 +9,7 @@ A workspace widget for the Omarchy bar that shows the apps open on each workspac
 - Shows an icon for each app open on a workspace, in the order the windows sit on screen (left to right).
 - Puts a rounded border around the active workspace, using your theme's accent colour, so it follows theme changes.
 - Shows a dot or a number for empty workspaces.
-- Lists the window titles on a workspace when you hover it.
+- Lists the window titles on a workspace when you hover it. Hovering also enlarges the workspace slightly and, if it isn't the active one, adds a soft glow in the accent colour.
 - Switches to a workspace when you left-click it.
 - Opens the settings menu when you right-click it.
 

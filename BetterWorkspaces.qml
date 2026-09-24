@@ -1,4 +1,5 @@
 import QtQuick
+import QtQuick.Effects
 import QtQuick.Layouts
 import Quickshell
 import Quickshell.Hyprland
@@ -243,6 +244,12 @@ Panel {
         text: numberText
         labelVisible: false
         opacity: occupied || focused ? 1 : 0.45
+        // Hover lift. Scale is a transform, so neighbours don't reflow.
+        scale: tooltipHovered ? 1.1 : 1
+
+        Behavior on scale {
+          NumberAnimation { duration: 120; easing.type: Easing.OutCubic }
+        }
         horizontalMargin: 6
         verticalPadding: 6
         fixedWidth: root.vertical ? root.barSize : Math.max(Style.space(20), content.implicitWidth + Style.spaceReal(12) + root.padding * 2)
@@ -259,6 +266,30 @@ Panel {
         onPressed: function(b) {
           if (b === Qt.RightButton) root.toggle()
           else root.focusWorkspace(modelData)
+        }
+
+        // Soft accent glow when hovering an inactive workspace: a blurred
+        // copy of the pill shape, painted behind everything else.
+        Rectangle {
+          id: glowShape
+          anchors.fill: highlight
+          radius: root.activeRadius
+          color: root.activeBorder
+          visible: false
+        }
+
+        MultiEffect {
+          anchors.fill: glowShape
+          source: glowShape
+          autoPaddingEnabled: true
+          blurEnabled: true
+          blur: 1.0
+          blurMax: 16
+          opacity: button.tooltipHovered && !button.focused ? 0.45 : 0
+
+          Behavior on opacity {
+            NumberAnimation { duration: 160; easing.type: Easing.OutCubic }
+          }
         }
 
         Rectangle {
