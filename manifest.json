@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "simon.betterworkspaces",
+  "id": "io.github.simonfrom.betterworkspaces",
   "name": "BetterWorkspaces",
   "version": "1.0.0",
   "author": "Simon From",
@@ -15,9 +15,8 @@
     "displayName": "BetterWorkspaces",
     "description": "Workspace indicators with app icons and a settings menu",
     "category": "Compositor",
-    "allowMultiple": false
+    "allowMultiple": false,
+    "defaultSection": "left"
   },
-  "omarchy": {
-    "clonedFrom": "omarchy.workspaces"
-  }
+  "license": "MIT"
 }

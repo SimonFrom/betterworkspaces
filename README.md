@@ -16,10 +16,25 @@ A workspace widget for the Omarchy bar that shows the apps open on each workspac
 ## Install
 
 ```bash
-omarchy plugin add <git-url> --enable
+omarchy plugin add https://github.com/SimonFrom/betterworkspaces.git --enable
 ```
 
-The widget replaces the built-in Workspaces widget.
+Pick the **left** section when asked. Then remove the built-in Workspaces widget, so you don't have two:
+
+```bash
+omarchy plugin disable omarchy.workspaces
+```
+
+**Requirements:** Omarchy with Hyprland. Nothing else to install. The widget only runs `hyprctl` to switch workspaces. It makes no network requests and needs no extra permissions.
+
+## Remove
+
+```bash
+omarchy plugin remove io.github.simonfrom.betterworkspaces
+omarchy bar put omarchy.workspaces --section left
+```
+
+The second command puts the built-in Workspaces widget back.
 
 ## Settings
 
@@ -40,7 +55,7 @@ Changes apply right away and are saved to `~/.config/omarchy/shell.json`.
 These options are only available by editing the widget's entry in `shell.json`:
 
 ```json
-{ "id": "simon.betterworkspaces", "maxIcons": 4, "dedupe": true, "showIcons": true, "activeColor": "#ffffff" }
+{ "id": "io.github.simonfrom.betterworkspaces", "maxIcons": 4, "dedupe": true, "showIcons": true, "activeColor": "#ffffff" }
 ```
 
 - `maxIcons`: the number of icons shown per workspace before it shows "+N".
@@ -48,7 +63,7 @@ These options are only available by editing the widget's entry in `shell.json`:
 - `showIcons`: turns app icons off entirely.
 - `activeColor`: overrides the theme colour of the active border.
 
-The settings menu can also be opened from a keybind: `omarchy-shell simon.betterworkspaces toggle`.
+The settings menu can also be opened from a keybind: `omarchy-shell io.github.simonfrom.betterworkspaces toggle`.
 
 ## What it can't do
 

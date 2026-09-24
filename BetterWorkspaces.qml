@@ -23,12 +23,12 @@ import qs.Ui
 //   activeColor (string, default theme accent) - active workspace border colour
 Panel {
   id: root
-  moduleName: "omarchy.workspaces"
-  // `omarchy-shell simon.betterworkspaces toggle` opens the settings menu.
-  ipcTarget: "simon.betterworkspaces"
+  moduleName: "io.github.simonfrom.betterworkspaces"
+  // `omarchy-shell io.github.simonfrom.betterworkspaces toggle` opens the settings menu.
+  ipcTarget: "io.github.simonfrom.betterworkspaces"
 
   // Layout entry id in shell.json; settings are persisted against it.
-  readonly property string entryId: "simon.betterworkspaces"
+  readonly property string entryId: "io.github.simonfrom.betterworkspaces"
 
   readonly property bool vertical: bar ? bar.vertical : false
   readonly property int barSize: bar ? bar.barSize : Style.bar.sizeHorizontal
