@@ -134,11 +134,35 @@ Panel {
     return ""
   }
 
+  // Chromium web apps (omarchy-launch-webapp) get a class like
+  // "chrome-discord.com__channels_@me-Default": host + path with "/" -> "_".
+  // Match it to the desktop entry that launches the same URL.
+  function webAppEntry(appId) {
+    var match = /^(?:chrome|chromium|brave|msedge|vivaldi)-(.+)-[^-]+$/.exec(appId)
+    if (!match) return null
+    var key = match[1]
+    var host = key.split("__")[0]
+    var hostMatch = null
+
+    var entries = DesktopEntries.applications.values || []
+    for (var i = 0; i < entries.length; i++) {
+      var entry = entries[i]
+      var exec = entry.execString || (entry.command || []).join(" ")
+      var url = /https?:\/\/([^\/\s"']+)([^\s"']*)/.exec(String(exec || ""))
+      if (!url) continue
+      var entryKey = url[1] + "_" + (url[2] || "/").replace(/\//g, "_")
+      if (entryKey === key) return entry
+      if (!hostMatch && url[1] === host) hostMatch = entry
+    }
+
+    return hostMatch
+  }
+
   function resolveIcon(appId) {
     if (appId in root.iconCache) return root.iconCache[appId]
 
     var source = ""
-    var entry = DesktopEntries.heuristicLookup(appId)
+    var entry = root.webAppEntry(appId) || DesktopEntries.heuristicLookup(appId)
     var candidates = []
     if (entry && entry.icon) candidates.push(String(entry.icon))
     candidates.push(appId, appId.toLowerCase())
