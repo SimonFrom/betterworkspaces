@@ -62,6 +62,29 @@ Panel {
     if (root.bar && root.bar.shell) root.bar.shell.updateEntryInline(root.entryId, next)
   }
 
+  // Where this widget sits in the bar layout: { section, index, count }.
+  readonly property var barLocation: {
+    var config = root.bar && root.bar.shell ? root.bar.shell.shellConfig : null
+    var layout = config && config.bar ? config.bar.layout : null
+    var sections = ["left", "center", "right"]
+    for (var s = 0; layout && s < sections.length; s++) {
+      var entries = layout[sections[s]] || []
+      for (var i = 0; i < entries.length; i++) {
+        if (entries[i] && entries[i].id === root.entryId)
+          return { section: sections[s], index: i, count: entries.length }
+      }
+    }
+    return { section: "", index: -1, count: 0 }
+  }
+
+  // Move within the bar via `omarchy bar move`, which keeps our settings.
+  // An index past the end of a section clamps to the end.
+  function moveTo(section, atStart) {
+    if (!root.bar) return
+    root.bar.run("omarchy-bar move " + Util.shellQuote(root.entryId)
+      + " --section " + section + " --index " + (atStart ? 0 : 999))
+  }
+
   function workspaceById(id) {
     var values = Hyprland.workspaces.values
     for (var i = 0; i < values.length; i++) {
@@ -514,6 +537,44 @@ Panel {
             opacity: 0.6
             font.family: root.bar ? root.bar.fontFamily : Style.font.family
             font.pixelSize: Style.font.bodySmall
+          }
+        }
+
+        PanelSeparator { foreground: root.barForeground }
+
+        Column {
+          width: parent.width
+          spacing: Style.space(10)
+
+          PanelSectionHeader {
+            text: "POSITION"
+            foreground: root.barForeground
+          }
+
+          ButtonGroup {
+            focusable: false
+            options: root.vertical
+              ? [{ value: "left", label: "Top" }, { value: "center", label: "Middle" }, { value: "right", label: "Bottom" }]
+              : [{ value: "left", label: "Left" }, { value: "center", label: "Center" }, { value: "right", label: "Right" }]
+            value: root.barLocation.section
+            foreground: root.barForeground
+            onChanged: function(v) {
+              if (v !== root.barLocation.section) root.moveTo(v, v === "right")
+            }
+          }
+
+          ButtonGroup {
+            focusable: false
+            options: [
+              { value: "start", label: "First in section" },
+              { value: "end", label: "Last in section" }
+            ]
+            value: root.barLocation.index === 0 ? "start"
+              : (root.barLocation.index === root.barLocation.count - 1 ? "end" : "")
+            foreground: root.barForeground
+            onChanged: function(v) {
+              if (root.barLocation.section) root.moveTo(root.barLocation.section, v === "start")
+            }
           }
         }
       }

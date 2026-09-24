@@ -49,6 +49,7 @@ Right-click any workspace:
 | Unused workspaces | Dots or numbers |
 | Workspaces: Fixed | Always show workspaces 1–N, plus any others with windows |
 | Workspaces: Dynamic | Only show workspaces with windows, plus the active one |
+| Position | Left, center or right section of the bar (top, middle or bottom on a vertical bar), and first or last within that section |
 
 Changes apply right away and are saved to `~/.config/omarchy/shell.json`.
 
