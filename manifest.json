@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "id": "simon.betterbar",
+  "name": "BetterBar",
+  "version": "1.0.0",
+  "author": "Simon From",
+  "description": "Workspace indicators with app icons and a settings menu",
+  "kinds": [
+    "bar-widget"
+  ],
+  "entryPoints": {
+    "barWidget": "BetterBar.qml"
+  },
+  "barWidget": {
+    "displayName": "BetterBar",
+    "description": "Workspace indicators with app icons and a settings menu",
+    "category": "Compositor",
+    "allowMultiple": false
+  },
+  "omarchy": {
+    "clonedFrom": "omarchy.workspaces"
+  }
+}
