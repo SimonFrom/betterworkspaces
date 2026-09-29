@@ -10,8 +10,22 @@
 # helper processes count too: Steam's window belongs to steamwebhelper, but
 # its parent `steam` does the downloading. BetterWorkspaces diffs successive
 # samples into rates; disk + network together means a download.
+#
+# The bar runs this every 1.5 seconds, so every producer is bounded:
+#   - ps and ss each get PRODUCER_TIMEOUT seconds; a stalled one is killed and
+#     its partial output used.
+#   - ss output is cut at MAX_SS_BYTES. A cut only undercounts network bytes,
+#     which at worst labels a download "Running".
+#   - This script's own output is cut at MAX_OUTPUT_BYTES. It is one short
+#     line per window pid, far below the cap.
+# BetterWorkspaces also runs the whole script under its own `timeout`.
 
-ps -e -o pid=,ppid=,comm= | awk -v roots="$*" '
+PRODUCER_TIMEOUT=1
+MAX_SS_BYTES=$((4 * 1024 * 1024))
+MAX_OUTPUT_BYTES=$((64 * 1024))
+
+timeout -k 0.5 "$PRODUCER_TIMEOUT" ps -e -o pid=,ppid=,comm= 2>/dev/null |
+awk -v roots="$*" -v producerTimeout="$PRODUCER_TIMEOUT" -v maxSsBytes="$MAX_SS_BYTES" '
   { parent[$1] = $2; comm[$1] = $3 }
 
   function session(p) {
@@ -47,7 +61,7 @@ ps -e -o pid=,ppid=,comm= | awk -v roots="$*" '
     }
 
     # ss prints each socket line, then an indented line of tcp_info.
-    cmd = "ss -tinpH 2>/dev/null"
+    cmd = "timeout -k 0.5 " producerTimeout " ss -tinpH 2>/dev/null | head -c " maxSsBytes
     sockPid = ""
     while ((cmd | getline line) > 0) {
       if (line !~ /^[ \t]/) {
@@ -63,4 +77,4 @@ ps -e -o pid=,ppid=,comm= | awk -v roots="$*" '
     close(cmd)
 
     for (i = 1; i <= n; i++) print r[i], disk[rootOf[r[i]]] + 0, net[rootOf[r[i]]] + 0
-  }'
+  }' | head -c "$MAX_OUTPUT_BYTES"
