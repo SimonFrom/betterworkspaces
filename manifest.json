@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "io.github.simonfrom.betterworkspaces",
   "name": "BetterWorkspaces",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "author": "Simon From",
   "description": "Workspace indicators with app icons, activity animations and a settings menu",
   "kinds": [

@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.1
+
+- The background probes the bar runs every 1.5 seconds now have a deadline and an output cap. `disk-activity.sh` gives `ps` and `ss` one second each, stops reading `ss` after 4 MiB, and caps its own output at 64 KiB. The herdr snapshot is capped at 1 MiB. Both probes are killed if they run longer than 3 seconds. Before this, a stalled or very chatty `ss` could keep a probe running and its output growing without limit.
+
 ## 1.1.0
 
 - The workspace border circles while something there is running: downloads, heavy disk activity, herdr agents, and apps showing a spinner in their title.

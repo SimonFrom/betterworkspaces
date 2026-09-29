@@ -498,13 +498,18 @@ Panel {
     root.notificationService = root.bar.shell.serviceFor("omarchy.notifications")
   }
 
-  // Line 1: pids of the terminals hosting a herdr client. Rest: the snapshot.
+  // Both probes run every 1.5s into a StdioCollector, so each gets a deadline
+  // (killed after 3s, SIGKILL a second later) and a cap on what it can print.
+  readonly property var probeTimeout: ["timeout", "-k", "1", "3"]
+
+  // Line 1: pids of the terminals hosting a herdr client. Rest: the snapshot,
+  // cut at 1 MiB; a cut snapshot fails to parse and reads as no agents.
   Process {
     id: herdrProc
-    command: ["bash", "-c",
+    command: root.probeTimeout.concat(["bash", "-c",
       "pgrep -x herdr >/dev/null || exit 0; "
       + "for p in $(pgrep -x herdr); do ps -o ppid= -p \"$p\"; done | tr -d ' ' | paste -sd, -; "
-      + "timeout 2 herdr api snapshot 2>/dev/null"]
+      + "timeout 2 herdr api snapshot 2>/dev/null | head -c 1048576"])
     stdout: StdioCollector {
       onStreamFinished: root.parseHerdr(this.text)
     }
@@ -525,7 +530,9 @@ Panel {
     onTriggered: {
       var pids = root.windowPids()
       if (diskProc.running || pids.length === 0) return
-      diskProc.command = ["bash", decodeURIComponent(Qt.resolvedUrl("disk-activity.sh").toString().replace(/^file:\/\//, ""))].concat(pids.map(String))
+      // disk-activity.sh bounds its own producers and output; this bounds the whole run.
+      var script = decodeURIComponent(Qt.resolvedUrl("disk-activity.sh").toString().replace(/^file:\/\//, ""))
+      diskProc.command = root.probeTimeout.concat(["bash", script], pids.map(String))
       diskProc.running = true
     }
     onRunningChanged: if (!running) {
