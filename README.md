@@ -123,6 +123,25 @@ The settings menu can also be opened from a keybind: `omarchy-shell io.github.si
 
 If a change to the plugin files doesn't appear in the bar, run `omarchy restart shell`.
 
+## Development
+
+| File | What it holds |
+|---|---|
+| `BetterWorkspaces.qml` | The entry point: settings, workspace and icon lookups, layout |
+| `WorkspaceButton.qml` | One workspace: icons, active border, running dash, attention dot, tooltip |
+| `SettingsMenu.qml` | The right-click menu |
+| `ActivityTracker.qml` | Running and attention state from herdr, disk activity, notifications and Hyprland |
+| `Windows.js`, `AppIcons.js`, `Activity.js` | Pure logic with no QML dependencies |
+| `disk-activity.sh` | Per-app disk and network byte counts |
+
+The `.js` files are tested with Node's built-in test runner (Node 18 or newer):
+
+```bash
+node --test 'tests/*.test.mjs'
+```
+
+After changing a `.qml` file, run `omarchy restart shell`. Hot reload can keep serving a cached copy of `WorkspaceButton`, `SettingsMenu` or `ActivityTracker`.
+
 ## License
 
 MIT. See [LICENSE](LICENSE). Based on the Omarchy Workspaces widget by David Heinemeier Hansson.
